@@ -1,0 +1,49 @@
+.container {
+    height: calc(100vh - 114px);
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.itemGrid {
+    background: #f5f5f5;
+    padding: 30px;
+}
+
+.itemGridContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.item {
+    background: #fff;
+    height: 70px;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+}
+
+.item:hover {
+    background: #fcfcfc;
+    cursor: pointer;
+}
+
+.item div h2{
+    margin-left: 20px;
+}
+
+.itemRequest {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.itemRequest div h1 {
+    font-size: 3rem;
+    color: #ffbf00;
+}

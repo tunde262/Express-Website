@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Company Dashboard*/
+.splitScreen {
+    width: 100%;
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: calc(100vh - 114px);
+}
+
+.profileEdit {
+    position: fixed;
+    background: #ffbf00;
+    bottom: 90px;
+    left: 50px;
+    text-align: center;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.profileEdit a {
+    color: white;
+    text-decoration: none;
+}
+
+.profileEdit:hover {
+    cursor: pointer;
+}
+
+.profileDelete {
+    position: fixed;
+    background: #ffbf00;
+    bottom: 40px;
+    left: 50px;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.profileDelete:hover {
+    cursor: pointer;
+}

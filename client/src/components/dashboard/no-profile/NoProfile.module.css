@@ -1,0 +1,30 @@
+.container {
+    margin: 50px;
+    text-align: center;
+}
+
+.container div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+}
+
+.largeButton {
+    height: 400px;
+    width: 400px;
+    background: #ffbf00;
+    border-radius: 20px;
+}
+
+.container div a {
+    text-decoration: none;
+    margin: auto;
+    color: white;
+    font-size: 2rem;
+    font-weight: 200;
+}
+
+.largeButton:hover {
+    background: #ffd400;
+}

@@ -1,0 +1,165 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 0 3rem;
+}
+
+h1, h2 {
+    font-weight: 200;
+    margin: 0.4rem;
+}
+
+h1 {
+    font-size: 3.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+    color: #aaa;
+}
+
+.cursor {
+    width: fit-content;
+    border-right: 0.2rem solid #000;
+}
+
+@media(min-width: 1200px) {
+    h1 {
+       font-size: 5rem; 
+    }
+}
+
+@media(max-width: 800px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    h1 {
+       font-size: 3rem; 
+    }
+
+    .container h2 {
+        display: none;
+    }
+}
+
+@media(max-width: 500px) {
+    h1 {
+       font-size: 2.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .container h2 {
+        display: none;
+    }
+}
+
+.info {
+    box-sizing: border-box;
+    display: grid;
+    padding: 40px 30px;
+    background: #ffbf00;
+    width: 100%;
+    height: 300px;
+    min-height: fit-content;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+hr {
+    background-color: white;
+    border: none;
+    height: 2px;
+    margin: 40px 0;
+}
+
+.info div {
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+.info div i {
+    font-size: 3.5rem;
+}
+.info div p {
+    margin: 0 20px;
+}
+
+.how_works {
+    display: grid;
+    grid-template-areas: 
+        'how1 picture1'
+        'picture2 how2'
+        'how3 picture3'
+        'picture4 how4';
+    height: 200vh;
+}
+
+.how_works h1{
+    font-size: 2.5rem;
+    color: #ffbf00;
+    line-height: 10px;
+    margin-bottom: 20px;
+}
+
+.how1 {
+    grid-area: how1;
+    margin: 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    line-height: 2rem;
+}
+.how2 {
+    grid-area: how2;
+    margin: 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    line-height: 2rem;
+}
+.how3 {
+    grid-area: how3;
+    margin: 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    line-height: 2rem;
+}
+.how4 {
+    grid-area: how4;
+    margin: 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    line-height: 2rem;
+}
+.picture1 {
+    grid-area: picture1;
+    background-color: #ffbf00;
+}
+.picture2 {
+    grid-area: picture2;
+    background-color: #ffbf00;
+}
+.picture3 {
+    grid-area: picture3;
+    background-color: #ffbf00;
+}
+.picture4 {
+    grid-area: picture4;
+    background-color: #ffbf00;
+}
+
+
+
+
