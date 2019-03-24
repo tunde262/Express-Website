@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './main';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -19,8 +20,8 @@ class Landing extends Component {
         <div style={{height: '100vh'}}>
           <div className={classes.container}>
             
-              <h1>Hi we're Cardboard Express <br/>
-                {/* <div className={classes.cursor}><span className="txt-type" data-wait="3000" data-words='["Cardboard Express", "a last-delivery marketplace"]'></span></div> */}
+              <h1>Hi we're <br/>
+                <div className={classes.cursor}><span className="txt-type" data-wait="3000" data-words='["Cardboard Express", "a last-delivery marketplace"]'></span></div>
               </h1>
             <h2>Your customers want things delivered fast..... We can help you with that. </h2>
             <h2>Cardboard Express is a last mile delivery marketplace that connects online stores with fulfillers.</h2>
