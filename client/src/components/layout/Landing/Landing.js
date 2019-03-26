@@ -50,7 +50,7 @@ class Landing extends Component {
             <p>Get instant updates about your items status and watch the items delivery on a map in realtime on your dashboard</p>
           </div>
         </div>
-        <h1 style={{textAlign: 'center'}}>How You Benefit</h1>
+        <h1 style={{textAlign: 'center', color: '#aaa'}}>How You Benefit</h1>
         <div className={classes.how_works}>
           <div className={classes.how1}>
             <h1>Put your feet up and relax!</h1>
