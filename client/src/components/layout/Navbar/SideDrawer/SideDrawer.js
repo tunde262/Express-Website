@@ -29,9 +29,9 @@ class SideDrawer extends Component {
     
     const guestLinks = (
         <ul>
-            <li><a href="/">How It Works</a></li>
+            {/* <li><a href="/">How It Works</a></li>
             <li><a href="/">How you benefit</a></li>
-            <li><a href="/">How we're different</a></li>
+            <li><a href="/">How we're different</a></li> */}
             <li><Link to="/login">Sign In</Link></li>
             <li><Link to="/register">Sign Up</Link></li>
         </ul>
