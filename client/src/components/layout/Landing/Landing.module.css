@@ -147,6 +147,9 @@ hr {
     .info {
         grid-template-columns: repeat(2, 1fr);
     }
+    .info div {
+        margin-bottom: 30px;
+    }
 
     .how_works div h1{
         line-height: 40px;
