@@ -176,6 +176,15 @@ hr {
     .how_works div h1{
         line-height: 40px;
     }
+
+    .how_works {
+        grid-template-areas: 
+            'how1'
+            'how2'
+            'how3'
+            'how4';
+        height: 200vh;
+    }
 }
 
 
