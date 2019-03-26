@@ -25,40 +25,6 @@ h2 {
     border-right: 0.2rem solid #000;
 }
 
-@media(min-width: 1200px) {
-    h1 {
-       font-size: 5rem; 
-    }
-}
-
-@media(max-width: 800px) {
-    .container {
-        padding: 0 1rem;
-    }
-
-    h1 {
-       font-size: 3rem; 
-    }
-
-    .container h2 {
-        display: none;
-    }
-}
-
-@media(max-width: 500px) {
-    h1 {
-       font-size: 2.5rem; 
-    }
-
-    h2 {
-        font-size: 1.5rem;
-    }
-
-    .container h2 {
-        display: none;
-    }
-}
-
 .info {
     box-sizing: border-box;
     display: grid;
@@ -158,6 +124,59 @@ hr {
 .picture4 {
     grid-area: picture4;
     background-color: #ffbf00;
+}
+
+@media(min-width: 1200px) {
+    h1 {
+       font-size: 5rem; 
+    }
+}
+
+@media(max-width: 800px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    h1 {
+       font-size: 3rem; 
+    }
+
+    .container h2 {
+        display: none;
+    }
+    
+    .info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .how_works div h1{
+        line-height: 40px;
+    }
+}
+
+@media(max-width: 500px) {
+    h1 {
+       font-size: 2.5rem; 
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .container h2 {
+        display: none;
+    }
+
+    .info {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .info div {
+        margin-bottom: 30px;
+    }
+
+    .how_works div h1{
+        line-height: 40px;
+    }
 }
 
 

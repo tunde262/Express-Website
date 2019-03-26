@@ -4,7 +4,6 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
 import classes from './Landing.module.css';
-import Footer from '../Footer/Footer';
 
 class Landing extends Component {
 
@@ -74,7 +73,6 @@ class Landing extends Component {
           </div>
           <div className={classes.picture4}></div>
         </div>
-        <Footer />
       </div>
     )
   }
