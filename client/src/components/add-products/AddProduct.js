@@ -11,13 +11,16 @@ class AddProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            file: '',
             name: '',
-            qty: '',
+            description: '',
+            price: '',
             errors: {}
         };
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.fileChanged = this.fileChanged.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -29,12 +32,27 @@ class AddProduct extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        const prodData = {
-            name: this.state.name,
-            qty: this.state.qty
-        };
+        let data = new FormData();
+        data.append('file', this.state.file);
+        data.append('name', this.state.name);
+        data.append('description', this.state.description);
+        data.append('price', this.state.price);
 
-        this.props.addProduct(prodData, this.props.history);
+        // const prodData = {
+        //     file: this.state.file,
+        //     name: this.state.name,
+        //     description: this.state.description,
+        //     price: this.state.price
+        // };
+
+        this.props.addProduct(data, this.props.history);
+    }
+
+    fileChanged(e) {
+        const f = e.target.files[0];
+        this.setState({
+            file: f
+        });
     }
 
     onChange(e) {
@@ -50,6 +68,12 @@ class AddProduct extends Component {
             <h1>Add Product</h1>
             <div className={classes.container}>
                 <form onSubmit={this.onSubmit} encType="multipart/form-data">
+                    <input 
+                        type="file" 
+                        name="file" 
+                        id="file" 
+                        onChange={this.fileChanged}
+                    />
                     <label>Name
                         <input 
                             type="text"
@@ -62,17 +86,26 @@ class AddProduct extends Component {
                         />
                         {errors.name && (<small className={classes.invalid_feedback}>{errors.name}</small>)}
                     </label>
-                    <label>Qty
+                    <label>Description
                         <input 
-                            type="text" 
-                            name="qty"
-                            className={classnames(`${classes.input_line}`, {
-                                [classes.is_invalid]: errors.qty
-                            })}
-                            value={this.state.qty}
+                            type="text"
+                            name="description" 
+                            className={classes.input_line}
+                            value={this.state.description}
                             onChange={this.onChange}
                         />
-                        {errors.qty && (<small className={classes.invalid_feedback}>{errors.qty}</small>)}
+                    </label>
+                    <label>Price
+                        <input 
+                            type="text" 
+                            name="price"
+                            className={classnames(`${classes.input_line}`, {
+                                [classes.is_invalid]: errors.price
+                            })}
+                            value={this.state.price}
+                            onChange={this.onChange}
+                        />
+                        {errors.price && (<small className={classes.invalid_feedback}>{errors.price}</small>)}
                     </label>
                     <input type="submit" value="Sign Up" />
                 </form>

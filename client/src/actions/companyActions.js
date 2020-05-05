@@ -46,10 +46,10 @@ export const addProduct = (prodData, history) => dispatch => {
         );
 }
 
-// Add product
-export const deleteProduct = (id) => dispatch => {
+// Delete product
+export const deleteProduct = (prod_id) => dispatch => {
     axios
-        .delete(`/api/company/product/${id}`)
+        .delete(`/api/company/product/${prod_id}`)
         .then(res => 
             dispatch({
                 type: GET_COMPANY,

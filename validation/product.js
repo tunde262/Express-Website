@@ -6,13 +6,14 @@ module.exports = function validateProductInput(data) {
 
     data.name = !isEmpty(data.name) ? data.name : '';
     data.qty = !isEmpty(data.qty) ? data.qty : '';
+    data.price = !isEmpty(data.price) ? data.price : '';
 
     if(Validator.isEmpty(data.name)) {
         errors.name = 'Product Name is required';
     }
 
-    if(Validator.isEmpty(data.qty)) {
-        errors.qty = 'Qty field is required';
+    if(Validator.isEmpty(data.price)) {
+        errors.price = 'Price field is required';
     }
 
     return {

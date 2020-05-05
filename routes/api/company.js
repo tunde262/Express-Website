@@ -2,6 +2,13 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
+const path = require('path');
+//gridfs
+const crypto = require('crypto');
+const multer = require('multer');
+const GridFsStorage = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+
 
 // Load validation
 const validateCompanyInput = require('../../validation/company');
@@ -11,11 +18,44 @@ const validateProductInput = require('../../validation/product');
 const Company = require('../../models/Company');
 //Load User Model
 const User = require('../../models/User');
+//Load Product Model
+const Product = require('../../models/Product');
 
-// @route GET api/company/test
-// @desc Tests profile route
-// @access Public
-router.get('/test', (req, res) => res.json({msg: "Profile Works"}));
+//Db Config
+const db = require('../../config/keys').mongoURI;
+
+// Create Mongo Connection
+const conn = mongoose.createConnection(db);
+
+// Init gfs
+let gfs;
+
+conn.once('open', () => {
+    // Init stream
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('images');
+})
+
+// Create Storage engine
+const storage = new GridFsStorage({
+    url: db,
+    file: (req, file) => {
+        return new Promise((resolve, reject) => {
+            crypto.randomBytes(16, (err, buf) => {
+                if (err) {
+                    return reject(err);
+                }
+                const filename = buf.toString('hex') + path.extname(file.originalname);
+                const fileInfo = {
+                    filename: filename,
+                    bucketName: 'images'
+                };
+                resolve(fileInfo);
+            });
+        });
+    }
+});
+const upload = multer({ storage });
 
 // @route GET api/company
 // @desc Get current users profile
@@ -24,6 +64,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
     const errors = {};
     Company.findOne({ user: req.user.id }) //find profile with the same id as the id of the user in the token
         .populate('user', ['name', 'email'])
+        .populate('products', ['name', 'price', 'image', 'image_name'])
         .then(company => {
             if(!company) {
                 errors.nocompany = 'There is no company for this user'
@@ -85,7 +126,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 // @route POST api/company/product
 // @desc Add product to company
 // @access Private
-router.post('/product', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/product', upload.single('file'), passport.authenticate('jwt', { session: false }), (req, res) => {
     const { errors, isValid} = validateProductInput(req.body);
 
     // Check Validation
@@ -93,39 +134,53 @@ router.post('/product', passport.authenticate('jwt', { session: false }), (req, 
         // Return any errors with 400 status
         return res.status(400).json(errors);
     } 
-    Company.findOne({ user: req.user.id })
-        .then(company => {
-            const newProd = {
-                name: req.body.name,
-                qty: req.body.qty
-            }
+    console.log(req.file)
 
-            // Add to prod array
-            company.product.unshift(newProd);
+    // Add single product
+    const newProduct = new Product({
+        name: req.body.name,
+        description: req.body.description,
+        price: req.body.price,
+        // Grab the file id that was stored in the database by the storage engine as the reference to your file
+        image: req.file.id,
+        image_name: req.file.filename
+    });
+    console.log(newProduct)
 
-            company.save().then(company => res.json(company));
-        })
+    Company.findOne({ user: req.user.id }).then(company => {
+        newProduct.user = company;
+        newProduct.save();
+        company.products.unshift(newProduct);
+        company.save();
+    });
+    res.json(newProduct);
 });
 
 // @route DELETE api/company/product/:exp_id
 // @desc Delete product from profile
 // @access Private
 router.delete('/product/:prod_id', passport.authenticate('jwt', { session: false }), (req, res) => {
-   
-    Company.findOne({ user: req.user.id })
-        .then(company => {
-            // Get remove index
-            const removeIndex = company.product
-                .map(item => item.id)
-                .indexOf(req.params.prod_id);
+    Product.findOneAndRemove({ _id: req.params.prod_id })
+        .then(product => {
+            Company.findOne({ user: req.user.id })
+                .then(company => {
+                    if(company.products.filter(product => product.toString() === req.params.prod_id).length === 0) {
+                        return res.status(400).json({ noproduct: 'This product was never added' });
+                    }
 
-            // Splice out of array
-            company.product.splice(removeIndex, 1);
+                    // Get remove index
+                    const removeIndex = company.products
+                        .map(product => product.toString())
+                        .indexOf(req.params.prod_id);
 
-            //save
-            company.save().then(company => res.json(company));
+                    // Splice out of array
+                    company.products.splice(removeIndex, 1);
+
+                    //save
+                    company.save().then(company => res.json(company));
+                })
+                .catch(err => res.status(404).json(err));
         })
-        .catch(err => res.status(404).json(err));
 });
 
 // @route DELETE api/company
@@ -138,5 +193,82 @@ router.delete('/', passport.authenticate('jwt', { session: false }), (req, res) 
                 .then(() => res.json({ success: true }));
         })
 });
+
+//@route GET /files
+//@desc Display all image files in JSON
+router.get('/files', (req, res) => {
+    gfs.files.find().toArray((err, files) => {
+        // Check if files
+        if(!files || files.length === 0) {
+            return res.status(404).json({
+                err: 'No files exist'
+            });
+        }
+
+        //Files exist
+        return res.json(files);
+    });
+});
+
+//@route GET /files/:filename
+//@desc Display single image object
+router.get('/files/:filename', (req, res) => {
+    gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+        // Check if file
+        if(!file || file.length === 0) {
+            return res.status(404).json({
+                err: 'No files exist'
+            });
+        }
+        //File exists
+        return res.json(file);
+    });
+});
+
+//@route GET /image/:filename
+//@desc Display Image
+router.get('/image/:filename', (req, res) => {
+    gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+        // Check if file
+        if(!file || file.length === 0) {
+            return res.status(404).json({
+                err: 'No files exist'
+            });
+        }
+        
+        //Check if image
+        if(file.contentType === 'image/jpeg' || file.contentType === 'img/png' || file.contentType === 'image/png') {
+            //  Read output to browser
+            const readstream = gfs.createReadStream(file.filename);
+            readstream.pipe(res);
+        } else {
+            res.status(404).json({
+                err: 'Not an image'
+            });
+        }
+    });
+});
+
+//@route DELETE /files/:id
+//@desc Delete image
+router.delete('/files/:id', (req, res) => {
+    gfs.remove({ _id: req.params.id }, (err) => {
+        if (err) {
+            return res.status(500).json({ success: false })
+        }
+        return res.json({ success: true });
+    });
+});
+
+//@route GET /:prod_id
+//@desc Get single product 
+router.get('/:prod_id', (req, res) => {
+    Product.findById(req.params.prod_id)
+        .then(prod => {
+            res.json(prod);
+        })
+        .catch(err => res.status(404).json({prod: 'This Product was never added'}));
+});
+
 
 module.exports = router;

@@ -42,7 +42,7 @@ class Dashboard extends Component {
                 <div className={classes.container}>
                     <Navbar />
                     <div className={classes.splitScreen}>
-                        <Product product={company.product} />
+                        <Product product={company.products} />
                         <Map />
                     </div>
                     <div className={classes.profileEdit}><Link to="edit-company">Edit Account</Link></div>

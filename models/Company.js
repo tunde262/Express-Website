@@ -23,16 +23,10 @@ const CompanySchema = new Schema({
         type: String,
         required: true
     },
-    product: [
+    products: [
         {
-            name: {
-                type: String,
-                required: true
-            },
-            qty: {
-                type: Number,
-                required: true
-            }
+            type: Schema.Types.ObjectId,
+            ref: 'product'
         }
     ]
 });

@@ -23,6 +23,7 @@ import CreateCompany from './components/create-company/CreateCompany';
 import AddProduct from './components/add-products/AddProduct';
 import CreateFulfiller from './components/create-fulfiller/CreateFulfiller';
 import EditFulfiller from './components/edit-fulfiller/EditFulfiller';
+import ProductPage from './components/product-page/ProductPage';
 
 // Check for token
 if(localStorage.jwtToken) {
@@ -94,6 +95,9 @@ class App extends Component {
                 </Switch>
                 <Switch>
                   <PrivateRoute exact path="/add-product" component={ AddProduct } />
+                </Switch>
+                <Switch>
+                  <PrivateRoute exact path="/:id" component={ ProductPage } />
                 </Switch>
                 <Switch>
                   <PrivateRoute exact path="/create-fulfiller" component={ CreateFulfiller } />

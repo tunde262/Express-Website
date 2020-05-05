@@ -7,15 +7,16 @@ import { deleteProduct } from '../../../actions/companyActions';
 import classes from './Product.module.css';
 
 class Product extends Component {
-    onDeleteClick(id) {
-        this.props.deleteProduct(id);
+    onDeleteClick(prod_id) {
+        this.props.deleteProduct(prod_id);
     }
 
   render() {
     const product = this.props.product.map(prod => (
         <tr key={prod._id}>
-            <td>{prod.name}</td>
-            <td>{prod.qty}</td>
+            <td><img style={{width: '50px'}} src={`http://localhost:5000/api/company/image/${prod.image_name}`} alt="img" /></td>
+            <td><Link to={`/` + prod._id}>{prod.name}</Link></td>
+            <td>{prod.price}</td>
             <td><span className={classes.trash}><i className="fas fa-trash" onClick={this.onDeleteClick.bind(this, prod._id)}></i></span></td>
         </tr>
     ))
@@ -30,8 +31,9 @@ class Product extends Component {
                     </th>
                 </tr>
                 <tr>
+                    <th>img</th>
                     <th>Product Name</th>
-                    <th colspan="2">Qty</th>
+                    <th colspan="2">Price</th>
                 </tr>
             </thead>
             <tbody>
